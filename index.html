@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/MarkDownStyle.css">
+  </head>
+  <body class="container" style="height:100vh;">
+    <div class="row" style="height:100%;">
+      <div class="col-sm-6" style="height:100%;">
+        <h3 class="title">Markdown</h3>
+        <textarea id="text-input" oninput="this.editor.update()" data-provide="markdown" style="width:100%;height:100%;" rows="10" ></textarea>
+        <script src="js/jquery-2.1.4.js"></script>
+      </div>
+      <div  class="col-sm-6">
+        <h3 class="title">Preview</h3>
+        <hr/>
+        <p id="preview">
+        </p>
+      </div>
+    </div>
+ <script>
+    window.$ = window.jQuery = require('./js/jquery-2.1.4.js');
+  </script>
+  <script src="lib/markdown.js"></script>
+  <script src="lib/markdownUpdate.js"></script>
+  <script src="js/bootstrap-markdown.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  </body>
+</html>
