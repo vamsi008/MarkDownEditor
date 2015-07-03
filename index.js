@@ -1,5 +1,6 @@
 var app = require('app'),
   BrowserWindow = require('browser-window'),
+  Tray = require('tray'),
   Menu = require('menu'),
   MenuItem = require('menu-item'),
   dialog = require('dialog'),
@@ -13,25 +14,32 @@ var menuTemplate = [{
   label: 'Marvelous',
   submenu: [{
     label: 'About Marvelous',
-    selector: 'orderFrontStandardAboutPanel:'
+    accelerator: 'Control+`',
+    click: function () {
+      dialog.showMessageBox({
+        title: 'About Marvelous',
+        message: 'Marvelous was developed by Vamsi Chava, Srikanth P, Kiran Danduprolu, Gaurav T as part of an Hackathon event in about 2 days. \n\nMarvelous is intended to be the reader for the next generation portable markdown files.',
+        buttons: ['OK']
+      });
+    }
   }, {
     type: 'separator'
   }, {
     label: 'Help',
-    accelerator: 'Command+H',
+    accelerator: 'Control+H',
     selector: 'help:'
   }, {
     type: 'separator'
   }, {
     label: 'Quit',
-    accelerator: 'Command+Q',
+    accelerator: 'Control+Q',
     selector: 'terminate:'
   }, ]
 }, {
   label: 'File',
   submenu: [{
     label: 'Open',
-    accelerator: 'Command+O',
+    accelerator: 'Control+O',
     selector: 'open:',
     click: function handleOpenButton() {
       dialog.showOpenDialog({ properties: ['openFile']}, function(filename) {
@@ -51,53 +59,53 @@ var menuTemplate = [{
     type: 'separator'
   }, {
     label: 'Save',
-    accelerator: 'Command+S',
+    accelerator: 'Control+S',
     selector: 'save:'
   }, {
     label: 'Save as',
-    accelerator: 'Command+Shift+S',
+    accelerator: 'Control+Shift+S',
     selector: 'save-as:'
   }]
 }, {
   label: 'Edit',
   submenu: [{
     label: 'Undo',
-    accelerator: 'Command+Z',
+    accelerator: 'Control+Z',
     selector: 'undo:'
   }, {
     label: 'Redo',
-    accelerator: 'Shift+Command+Z',
+    accelerator: 'Shift+Control+Z',
     selector: 'redo:'
   }, {
     type: 'separator'
   }, {
     label: 'Cut',
-    accelerator: 'Command+X',
+    accelerator: 'Control+X',
     selector: 'cut:'
   }, {
     label: 'Copy',
-    accelerator: 'Command+C',
+    accelerator: 'Control+C',
     selector: 'copy:'
   }, {
     label: 'Paste',
-    accelerator: 'Command+V',
+    accelerator: 'Control+V',
     selector: 'paste:'
   }, {
     label: 'Select All',
-    accelerator: 'Command+A',
+    accelerator: 'Control+A',
     selector: 'selectAll:'
   }]
 }, {
   label: 'View',
   submenu: [{
     label: 'Reload',
-    accelerator: 'Command+R',
+    accelerator: 'Control+R',
     click: function() {
       mainWindow.reload();
     }
   }, {
     label: 'Toggle DevTools',
-    accelerator: 'Alt+Command+I',
+    accelerator: 'Alt+Control+I',
     click: function() {
       mainWindow.toggleDevTools();
     }
@@ -106,12 +114,16 @@ var menuTemplate = [{
   label: 'Window',
   submenu: [{
     label: 'Minimize',
-    accelerator: 'Command+M',
-    selector: 'performMiniaturize:'
+    accelerator: 'Control+M',
+    click: function () {
+      mainWindow.minimize();
+    }
   }, {
     label: 'Close',
-    accelerator: 'Command+W',
-    selector: 'performClose:'
+    accelerator: 'Control+W',
+    click: function () {
+      mainWindow.close();
+    }
   }]
 }];
 
@@ -128,6 +140,7 @@ app.on('ready', function() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    icon: 'app/img/marvelous.png',
     title: 'Marvelous'
   });
 
