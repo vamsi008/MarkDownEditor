@@ -29,10 +29,10 @@ function handleDocumentChange(title) {
       modeName = "CSS";
     }
   } else {
-    document.getElementById("title").innerHTML = "[no document loaded]";
+    //document.getElementById("title").innerHTML = "[no document loaded]";
   }
   editor.setOption("mode", mode);
-  document.getElementById("mode").innerHTML = modeName;
+  //document.getElementById("mode").innerHTML = modeName;
   console.log("document changed")
 }
 
@@ -99,7 +99,7 @@ function handleNewButton() {
 
 function handleOpenButton() {
   dialog.showOpenDialog({properties: ['openFile']}, function(filename) {
-console.log("file Name"+ filename)	  
+console.log("file Name"+ filename)
       onChosenFileToOpen(filename.toString()); });
 }
 
@@ -135,7 +135,7 @@ function initContextMenu() {
     }
   }));
 
-  window.addEventListener('contextmenu', function(ev) { 
+  window.addEventListener('contextmenu', function(ev) {
     ev.preventDefault();
     menu.popup(remote.getCurrentWindow(), ev.x, ev.y);
   }, false);
@@ -154,16 +154,16 @@ onload = function() {
   saveButton.addEventListener("click", handleSaveButton);
 
   editor = CodeMirror(
-      document.getElementById("editor"),
-      {
-        mode: {name: "javascript", json: true },
-        lineNumbers: true,
-        theme: "lesser-dark",
-        extraKeys: {
-          "Cmd-S": function(instance) { handleSaveButton() },
-          "Ctrl-S": function(instance) { handleSaveButton() },
-        }
-      });
+    document.getElementById("editor"),
+    {
+      mode: {name: "javascript", json: true },
+      lineNumbers: true,
+      theme: "lesser-dark",
+      extraKeys: {
+        "Cmd-S": function(instance) { handleSaveButton() },
+        "Ctrl-S": function(instance) { handleSaveButton() },
+      }
+    });
 
   newFile();
   onresize();
