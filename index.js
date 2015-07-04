@@ -5,7 +5,8 @@ var app = require('app'),
   MenuItem = require('menu-item'),
   dialog = require('dialog'),
   fs = require('fs'),
-  clipboard = require('clipboard');
+  clipboard = require('clipboard'),
+  ipc = require('ipc');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
@@ -18,7 +19,7 @@ var menuTemplate = [{
     click: function () {
       dialog.showMessageBox({
         title: 'About Marvelous',
-        message: 'Marvelous was developed by Vamsi Chava, Srikanth P, Kiran Danduprolu, Gaurav T as part of an Hackathon event in about 2 days. \n\nMarvelous is intended to be the reader for the next generation portable markdown files.',
+        message: 'Marvelous was developed by \n\n Vamsi C,\n Srikanth P,\n Kiran D,\n Sudhir C \n\n as part of an Hackathon event in about 2 days. \n\nMarvelous is intended to be the reader for the next generation portable markdown files.',
         buttons: ['OK']
       });
     }
@@ -40,17 +41,21 @@ var menuTemplate = [{
   submenu: [{
     label: 'Open',
     accelerator: 'Control+O',
-    selector: 'open:',
-    click: function handleOpenButton() {
-      dialog.showOpenDialog({ properties: ['openFile']}, function(filename) {
+    click: function () {
+      dialog.showOpenDialog({ 
+        properties: ['openFile'],
+        filters: [
+          { name: 'All', extensions: ['md', 'markdown', 'MD', 'txt', 'TXT' ]},
+          { name: 'Markdown', extensions: ['md', 'markdown', 'MD' ]},
+          { name: 'Plain-text', extensions: ['txt', 'TXT' ]}
+        ]
+      }, function(filename) {
         if (filename) {
           fs.readFile(filename.toString(), function(err, data) {
             if (err) {
-              console.log("Read failed: " + err);
               return false;
             }
-
-            console.log(data);
+            mainWindow.webContents.send('editor-text',{ filename: filename.toString(), contents: data.toString() });
           });
         }
       });
@@ -60,11 +65,12 @@ var menuTemplate = [{
   }, {
     label: 'Save',
     accelerator: 'Control+S',
-    selector: 'save:'
+    click: function () {
+      mainWindow.webContents.send('editor-save');
+    }
   }, {
     label: 'Save as',
-    accelerator: 'Control+Shift+S',
-    selector: 'save-as:'
+    accelerator: 'Control+Shift+S'
   }]
 }, {
   label: 'Edit',
@@ -105,7 +111,7 @@ var menuTemplate = [{
     }
   }, {
     label: 'Toggle DevTools',
-    accelerator: 'Alt+Control+I',
+    accelerator: 'Control+Shift+I',
     click: function() {
       mainWindow.toggleDevTools();
     }
@@ -133,20 +139,22 @@ app.on('window-all-closed', function() {
     app.quit();
 });
 
+ipc.on('editor-save', function (event, args) {
+  fs.writeFileSync(args.filename, args.content);
+  event.sender.send('save-success');
+});
+
 // This method will be called when Electron has done everything
 // initialization and ready for creating browser windows.
 app.on('ready', function() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
     icon: 'app/img/marvelous.png',
     title: 'Marvelous'
   });
+  mainWindow.maximize(true);
 
-  var menu = new Menu();
-  menu = Menu.buildFromTemplate(menuTemplate);
-  mainWindow.setMenu(menu);
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
