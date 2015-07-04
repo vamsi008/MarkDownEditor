@@ -2,9 +2,15 @@
   "name": "Marvelous",
   "description": "Markdown editor for the future",
   "version": "1.0.0",
-  "author": "Team LeanTaaS<leantaas@imaginea.com>",
+  "author": "Team LeanTaaS <leantaas@imaginea.com>",
+  "contributors": [
+    { "name": "Vamsi Chava", "email": "vamsi.chava@imaginea.com" },
+    { "name": "Kiran Danduprolu", "email": "kiran.d@imaginea.com" },
+    { "name": "Sudhir Chokkakula", "email": "sudhir.chokkakula@imaginea.com" },
+    { "name": "Srikanth Pothkanuri", "email": "srikanth.p@imaginea.com" },
+  ],
   "bugs": {
-    "url": "https://github.com/ngoldman/electron-hello-world/issues"
+    "url": "https://github.com/hashd/Marvelous/issues"
   },
   "devDependencies": {
     "electron-prebuilt": "^0.27.1"
