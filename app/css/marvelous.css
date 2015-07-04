@@ -1,11 +1,11 @@
 * {
-  box-sizing: border-box;
+  box-sizing: border-box !important;
 }
 
 body.container {
   margin: 0;
-  width: 100vw;
   height: 100vh;
+  width: 100%;
 }
 
 .row {
@@ -21,15 +21,22 @@ body.container {
 #file-path {
   font-size: 0.5em;
   color: #ddd;
-  display: none;
 }
 
 #file-path:before {
   content: '(';
 }
 
+#file-path:empty:before {
+  display: none;
+}
+
 #file-path:after {
   content: ')';
+}
+
+#file-path:empty:after {
+  display: none;
 }
 
 .module-header {
@@ -44,22 +51,9 @@ body.container {
   padding: 4px 2px;
 }
 
-.modules, .editor-container {
-  height: 100%;
-}
-
 #preview {
   /* border: 1px solid #eee; */
   padding: 0 8px;
-  height: 100%;
-}
-
-.modules {
-  height: 100%;
-}
-
-.modules > * {
-  height: 100%;
 }
 
 /* Overrides */

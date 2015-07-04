@@ -5,6 +5,20 @@ clipboard = remote.require('clipboard');
 appWindow = remote.getCurrentWindow();
 ipc = require('ipc');
 
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: true,
+  smartLists: true,
+  smartypants: false,
+  highlight: function (code) {
+    return hljs.highlightAuto(code).value;
+  }
+});
+
 MarvelousEditor = function(inputSelector, previewSelector) {
 
 }
@@ -15,6 +29,7 @@ $(document).ready(function () {
   var filePath = null;
   var markdownEditor = null;
 
+  $window = $(window);
   markdownInput = $('#text-input');
   filetitleContainer = $('#file-title');
   filepathContainer = $('#file-path');
@@ -23,7 +38,7 @@ $(document).ready(function () {
     hiddenButtons: ['cmdPreview'],
     onChange: function(e){
       markdownEditor = e;
-      $("#preview").html(markdown.toHTML(e.getContent()));
+      $("#preview").html(marked(e.getContent()));
     }
   })
 
@@ -35,7 +50,7 @@ $(document).ready(function () {
       filename = (lastSlash <= 0) ? obj.filename : obj.filename.slice(lastSlash+1);
 
     filePath = obj.filename;
-    filepathContainer.html(obj.filename).show();
+    filepathContainer.html(obj.filename);
     filetitleContainer.html(filename);
   });
 
@@ -53,6 +68,16 @@ $(document).ready(function () {
   });
 
   ipc.on('save-success', function () {
-      dialog.showMessageBox({ title: "Success!", message: 'File Saved Successfully.', buttons: ['OK'] });
-  })
+      swal({
+        title: 'Success',
+        text: 'File saved successfully.',
+        type: 'success',
+        timer: 2000
+      });
+  });
+
+  $window.on('resize', function () {
+    $('#text-input').height($window.height() - $('.header').height() - $('.module-header').height() - 100);
+    $('#preview').height($window.height() - $('.header').height() - $('.module-header').height() - 60);
+  }).trigger('resize');
 });
