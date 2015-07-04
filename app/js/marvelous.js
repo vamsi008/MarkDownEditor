@@ -13,10 +13,11 @@ MarvelousEditor = function(inputSelector, previewSelector) {
 //console.log(window.remote, window.dialog);
 $(document).ready(function () {
   var filePath = null;
+  var markdownEditor = null;
+
   markdownInput = $('#text-input');
   filetitleContainer = $('#file-title');
   filepathContainer = $('#file-path');
-  var markdownEditor = null;
 
   markdownInput.markdown({
     hiddenButtons: ['cmdPreview'],
@@ -41,7 +42,14 @@ $(document).ready(function () {
   ipc.on('editor-save', function () {
     if (filePath) {
       ipc.send('editor-save', { filename: filePath, content: markdownEditor.getContent() });
+    } else {
+      var content = markdownEditor ? markdownEditor.getContent() : markdownInput.html();
+      ipc.send('editor-save-as', { content: content });
     }
+  });
+
+  ipc.on('editor-save-as', function () {
+    ipc.send('editor-save-as', { content: markdownEditor.getContent() });
   });
 
   ipc.on('save-success', function () {

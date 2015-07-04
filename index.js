@@ -42,7 +42,7 @@ var menuTemplate = [{
     label: 'Open',
     accelerator: 'Control+O',
     click: function () {
-      dialog.showOpenDialog({ 
+      dialog.showOpenDialog({
         properties: ['openFile'],
         filters: [
           { name: 'All', extensions: ['md', 'markdown', 'MD', 'txt', 'TXT' ]},
@@ -70,7 +70,10 @@ var menuTemplate = [{
     }
   }, {
     label: 'Save as',
-    accelerator: 'Control+Shift+S'
+    accelerator: 'Control+Shift+S',
+    click: function () {
+      mainWindow.webContents.send('editor-save-as');
+    }
   }]
 }, {
   label: 'Edit',
@@ -142,6 +145,26 @@ app.on('window-all-closed', function() {
 ipc.on('editor-save', function (event, args) {
   fs.writeFileSync(args.filename, args.content);
   event.sender.send('save-success');
+});
+
+ipc.on('editor-save-as', function (event, args) {
+  dialog.showSaveDialog({ title: "Save as" }, function (filename) {
+    if (filename !== undefined) {
+      filename = filename.toString();
+      if (filename.slice(-3) !== '.md' && filename.slice(-9) !== '.markdown') {
+        filename = filename + '.md';
+      }
+      fs.writeFileSync(filename, args.content);
+      event.sender.send('save-success');
+
+      fs.readFile(filename, function(err, data) {
+        if (err) {
+          return false;
+        }
+        mainWindow.webContents.send('editor-text',{ filename: filename.toString(), contents: data.toString() });
+      });
+    }
+  });
 });
 
 // This method will be called when Electron has done everything
