@@ -183,7 +183,8 @@ app.on('ready', function() {
   });
   mainWindow.maximize(true);
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
+ 	mainWindow.setMenu(Menu.buildFromTemplate(menuTemplate));
+ 
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
