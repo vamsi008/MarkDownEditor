@@ -1,30 +1,23 @@
 {
-  "name": "electron-hello-world",
-  "description": "Absolute bare minimum Hello World Electron app",
+  "name": "Marvelous",
+  "description": "Markdown editor for the future",
   "version": "1.0.0",
-  "author": "Nate Goldman <nate@ngoldman.me>",
+  "author": "Team LeanTaaS<leantaas@imaginea.com>",
   "bugs": {
     "url": "https://github.com/ngoldman/electron-hello-world/issues"
   },
   "devDependencies": {
     "electron-prebuilt": "^0.27.1"
   },
-  "homepage": "https://github.com/ngoldman/electron-hello-world",
   "keywords": [
     "atom-shell",
     "electron",
-    "example",
-    "hello",
-    "sample",
-    "world"
+    "markdown",
+    "editor"
   ],
-  "license": "CC-0",
+  "license": "MIT",
   "main": "index.js",
   "private": true,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ngoldman/electron-hello-world.git"
-  },
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
