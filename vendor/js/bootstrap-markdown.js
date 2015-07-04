@@ -27,8 +27,8 @@
   var Markdown = function (element, options) {
     // @TODO : remove this BC on next major release
     // @see : https://github.com/toopay/bootstrap-markdown/issues/109
-    var opts = ['autofocus', 'savable', 'hideable', 'width', 
-      'height', 'resize', 'iconlibrary', 'language', 
+    var opts = ['autofocus', 'savable', 'hideable', 'width',
+      'height', 'resize', 'iconlibrary', 'language',
       'footer', 'fullscreen', 'hiddenButtons', 'disabledButtons'];
     $.each(opts,function(_, opt){
       if (typeof $(element).data(opt) !== 'undefined') {
@@ -472,7 +472,7 @@
         // @see https://github.com/toopay/bootstrap-markdown/issues/170
         return this;
       }
-      
+
       // Give flag that tell the editor enter preview mode
       this.$isPreview = true;
       // Disable all buttons
@@ -1023,18 +1023,24 @@
               chunk = selected.text;
             }
 
-            link = prompt(e.__localize('Insert Hyperlink'),'http://');
+            swal({
+              title: 'Insert Hyperlink',
+              html: '<p><input id="swal-prompt-field" value="http://"></p>',
+              showCancelButton: true,
+              closeOnConfirm: true
+            }, function() {
+              link = $('#swal-prompt-field').val();
+              if (link !== null && link !== '' && link !== 'http://' && link.substr(0,4) === 'http') {
+                var sanitizedLink = $('<div>'+link+'</div>').text();
 
-            if (link !== null && link !== '' && link !== 'http://' && link.substr(0,4) === 'http') {
-              var sanitizedLink = $('<div>'+link+'</div>').text();
+                // transform selection and set the cursor into chunked text
+                e.replaceSelection('['+chunk+']('+sanitizedLink+')');
+                cursor = selected.start+1;
 
-              // transform selection and set the cursor into chunked text
-              e.replaceSelection('['+chunk+']('+sanitizedLink+')');
-              cursor = selected.start+1;
-
-              // Set the cursor
-              e.setSelection(cursor,cursor+chunk.length);
-            }
+                // Set the cursor
+                e.setSelection(cursor,cursor+chunk.length);
+              }
+            });
           }
         },{
           name: 'cmdImage',
@@ -1052,21 +1058,27 @@
               chunk = selected.text;
             }
 
-            link = prompt(e.__localize('Insert Image Hyperlink'),'http://');
+            swal({
+              title: 'Insert Image Hyperlink',
+              html: '<p><input id="swal-prompt-field" value="http://"></p>',
+              showCancelButton: true,
+              closeOnConfirm: true
+            }, function() {
+              link = $('#swal-prompt-field').val();
+              if (link !== null && link !== '' && link !== 'http://' && link.substr(0,4) === 'http') {
+                var sanitizedLink = $('<div>'+link+'</div>').text();
 
-            if (link !== null && link !== '' && link !== 'http://' && link.substr(0,4) === 'http') {
-              var sanitizedLink = $('<div>'+link+'</div>').text();
+                // transform selection and set the cursor into chunked text
+                e.replaceSelection('!['+chunk+']('+sanitizedLink+' "'+e.__localize('enter image title here')+'")');
+                cursor = selected.start+2;
 
-              // transform selection and set the cursor into chunked text
-              e.replaceSelection('!['+chunk+']('+sanitizedLink+' "'+e.__localize('enter image title here')+'")');
-              cursor = selected.start+2;
+                // Set the next tab
+                e.setNextTab(e.__localize('enter image title here'));
 
-              // Set the next tab
-              e.setNextTab(e.__localize('enter image title here'));
-
-              // Set the cursor
-              e.setSelection(cursor,cursor+chunk.length);
-            }
+                // Set the cursor
+                e.setSelection(cursor,cursor+chunk.length);
+              }
+            });
           }
         }]
       },{

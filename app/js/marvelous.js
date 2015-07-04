@@ -39,6 +39,7 @@ $(document).ready(function () {
     onChange: function(e){
       markdownEditor = e;
       $("#preview").html(marked(e.getContent()));
+      $("#preview").find('a').attr('target', '_blank');
     }
   })
 
@@ -77,7 +78,6 @@ $(document).ready(function () {
   });
 
   $window.on('resize', function () {
-    $('#text-input').height($window.height() - $('.header').height() - $('.module-header').height() - 100);
-    $('#preview').height($window.height() - $('.header').height() - $('.module-header').height() - 60);
+    $('#text-input, #preview').height($window.height() - $('.header').height() - $('.module-header').height() - 100);
   }).trigger('resize');
 });
