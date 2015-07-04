@@ -39,6 +39,12 @@ var menuTemplate = [{
 }, {
   label: 'File',
   submenu: [{
+    label: 'New',
+    accelerator: 'Control+N',
+    click: function () {
+      mainWindow.webContents.send('editor-new');
+    }
+  }, {
     label: 'Open',
     accelerator: 'Control+O',
     click: function () {

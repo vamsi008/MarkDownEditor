@@ -43,6 +43,14 @@ $(document).ready(function () {
     }
   })
 
+  ipc.on('editor-new', function (obj) {
+    filePath = undefined;
+    filetitleContainer.html('Unnamed');
+    filepathContainer.empty();
+    markdownEditor ? markdownEditor.setContent("") : markdownInput.empty();
+    markdownInput.trigger('change');
+  });
+
   ipc.on('editor-text', function (obj) {
     if (markdownEditor) { markdownEditor.setContent(obj.contents) };
     $('#text-input').empty().html(obj.contents).trigger('change');
