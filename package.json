@@ -1,7 +1,7 @@
 {
   "name": "Marvelous",
   "description": "Markdown editor for the future",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "author": "Team LeanTaaS <leantaas@imaginea.com>",
   "contributors": [
     {
@@ -26,7 +26,9 @@
   },
   "devDependencies": {
     "electron-packager": "^5.0.0",
-    "electron-prebuilt": "^0.27.1"
+    "electron-prebuilt": "^0.27.1",
+    "gulp": "^3.9.0",
+    "gulp-zip": "^3.0.2"
   },
   "keywords": [
     "atom-shell",
@@ -39,7 +41,7 @@
   "private": true,
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . Marvelous --platform=linux --arch=all --version=0.27.3 --icon=app/img/marvelous.svg --out=./dist/ --overwrite",
+    "build": "electron-packager . Marvelous --platform=linux --arch=all --version=0.27.3 --icon=app/img/marvelous.svg --out=./build/ --overwrite && gulp release:linux",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
