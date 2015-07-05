@@ -84,6 +84,10 @@ Marvel.MarvelousEditor.prototype = {
     container.on('keydown', null, 'alt+0', function () {
       self.openFileAt(9);
     });
+
+    container.on('keyup', null, 'ctrl+w', function () {
+      self.removeFileAt(self.openedFileIndex);
+    });
   },
 
   bindNewFileTabBarEvent: function () {

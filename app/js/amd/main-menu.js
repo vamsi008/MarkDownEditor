@@ -115,7 +115,7 @@ var menuTemplate = [{
     accelerator: 'Control+Alt+E',
     checked:false,
     type:'radio',
-    
+
        click: function() {
       mainWindow.webContents.send('editor-mode');
     }
@@ -161,7 +161,7 @@ var menuTemplate = [{
     }
   }, {
     label: 'Close',
-    accelerator: 'Control+W',
+    accelerator: 'Control+Q',
     click: function () {
       mainWindow.close();
     }
