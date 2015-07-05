@@ -103,7 +103,7 @@ var menuTemplate = [{
     click: function() {
       mainWindow.webContents.copy();
     }
-    
+
   }, {
     label: 'Paste',
     accelerator: 'Control+V',
@@ -117,7 +117,7 @@ var menuTemplate = [{
       mainWindow.webContents.selectAll();
     },
 
-  
+
 
   }]
 }, {
@@ -127,7 +127,7 @@ var menuTemplate = [{
     accelerator: 'Control+R',
     click: function() {
       mainWindow.reload();
-    }	
+    }
   }, {
     label: 'Toggle DevTools',
     accelerator: 'Control+Shift+I',
@@ -192,9 +192,8 @@ app.on('ready', function() {
     title: 'Marvelous'
   });
   mainWindow.maximize(true);
-
  	mainWindow.setMenu(Menu.buildFromTemplate(menuTemplate));
- 
+  mainWindow.webContents.send('editor-new');
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
