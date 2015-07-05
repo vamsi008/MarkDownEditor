@@ -115,6 +115,10 @@ Marvel.MarvelousEditor.prototype = {
     self.tabBar.on('dblclick', '.file-tab', function (e) {
       e.stopPropagation();
     });
+
+    self.tabBar.on('click', '.new-file', function (e) {
+      self.openFile(new Marvel.File());
+    });
   },
 
   bindWindowResizeHandler: function () {
@@ -313,7 +317,7 @@ Marvel.MarvelousEditor.prototype = {
     var tab = $('<div class="col-sm-2 col-md-1 col-lg-1 file-tab" />').attr('file-id', file.id).html(file.title).attr('title', file.filepath);
     tab.append($('<span class="glyphicon glyphicon-remove pull-right" />'));
 
-    self.tabBar.append(tab);
+    self.tabBar.find('.new-file').before(tab);
     tab.addClass('selected-tab').siblings().removeClass('selected-tab');
   }
 };

@@ -74,6 +74,18 @@ body.container {
   padding: 0 8px;
 }
 
+.new-file {
+  vertical-align: bottom;
+  color: #ddd;
+  padding: 6px 8px;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.new-file:hover {
+  color: #fff;
+}
+
 /* Overrides */
 .btn-toolbar {
   padding: 4px 0;
