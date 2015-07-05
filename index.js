@@ -6,14 +6,12 @@ var app = require('app'),
   dialog = require('dialog'),
   fs = require('fs'),
   clipboard = require('clipboard'),
-  ipc = require('ipc');
-
+  ipc = require('ipc'),
   mainMenu=require('./app/js/amd/main-menu.js');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
 var mainWindow = null;
-
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -56,7 +54,6 @@ app.on('ready', function() {
   });
   mainWindow.maximize(true);
  	mainWindow.setMenu(Menu.buildFromTemplate(mainMenu(mainWindow)));
-  mainWindow.webContents.send('editor-new');
 
   // and load the index.html of the app.
   mainWindow.loadUrl('file://' + __dirname + '/index.html');
