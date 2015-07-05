@@ -37,7 +37,7 @@ Marvel.MarvelousEditor.prototype = {
     var self = this;
     self.bindWindowResizeHandler();
     self.bindTabSelection();
-    //self.bindTabSortableEvent();
+    self.bindTabSortableEvent();
     self.bindKeyboardShortcuts();
     self.bindNewFileTabBarEvent();
   },
@@ -47,11 +47,13 @@ Marvel.MarvelousEditor.prototype = {
       tabBar = document.getElementById("tab-bar");
 
     Sortable.create(tabBar, {
-      animation: 300,
+      animation: 100,
       draggable: '.file-tab',
       onUpdate: function (e) {
-        var item = e.item;
-        console.log(item);
+        var item = e.item,
+          $item = $(item);
+
+        self.moveFileToIndex($item.attr('file-id'), $item.index());
       }
     });
   },
@@ -310,6 +312,22 @@ Marvel.MarvelousEditor.prototype = {
     }
 
     return -1;
+  },
+
+  moveFileToIndex: function (id, index) {
+    var self = this;
+    if (!id) return;
+    for (var i = 0, length = self.openedFiles.length; i < length; i++) {
+      if (self.openedFiles[i].id == id) {
+        var file = self.openedFiles[i];
+        self.openedFiles.splice(i, 1);
+        self.openedFiles.splice(index, 0, file);
+        self.openFileAt(index);
+        return true;
+      }
+    }
+
+    return false;
   },
 
   addTab: function (file) {
