@@ -115,15 +115,32 @@ var menuTemplate = [{
     accelerator: 'Control+A',
        click: function() {
       mainWindow.webContents.selectAll();
-    },
-
-
-
+    }
   }]
 }, {
   label: 'View',
   submenu: [{
-    label: 'Reload',
+    label: 'Editor Mode',
+    accelerator: 'Control+Alt+E',
+    click: function() {
+      mainWindow.webContents.send('editor-mode');
+    }
+  }, {
+    label: 'Preview Mode',
+    accelerator: 'Control+Alt+P',
+    click: function() {
+      mainWindow.webContents.send('preview-mode');
+    }
+  }, {
+    label: 'Split Mode',
+    accelerator: 'Control+Alt+S',
+    click: function() {
+      mainWindow.webContents.send('split-mode');
+    }
+  }, {
+    type: 'separator'
+  }, {
+    label: 'Reset Marvelous',
     accelerator: 'Control+R',
     click: function() {
       mainWindow.reload();
@@ -131,6 +148,7 @@ var menuTemplate = [{
   }, {
     label: 'Toggle DevTools',
     accelerator: 'Control+Shift+I',
+    visible: false,
     click: function() {
       mainWindow.toggleDevTools();
     }

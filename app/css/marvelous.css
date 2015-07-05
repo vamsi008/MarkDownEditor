@@ -88,6 +88,7 @@ body.container {
 #tab-bar {
   padding: 0;
   background: #444;
+  cursor: cell;
 }
 
 textarea {
@@ -100,4 +101,12 @@ textarea {
 
 .md-editor {
   height: 75%;
+}
+
+.row.modules {
+  padding: 0;
+}
+
+.editor-container {
+  padding: 0;
 }

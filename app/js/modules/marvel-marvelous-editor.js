@@ -22,6 +22,10 @@ Marvel.MarvelousEditor.prototype = {
         self.markdownEditor = e;
         self.previewArea.html(marked(e.getContent()));
         self.previewArea.find('a').attr('target', '_blank');
+
+        if (self.openedFile) {
+          self.openedFile.updateContent(e.getContent());
+        }
       }
     }).trigger('change');
 
@@ -96,7 +100,7 @@ Marvel.MarvelousEditor.prototype = {
 
   bindWindowResizeHandler: function () {
     var self = this,
-      magicHeight = 100;
+      magicHeight = 72;
 
     $window.on('resize', function () {
       $('#text-input, #preview').height($window.height() - $('#tab-bar').height() - $('.header').height() - $('.module-header').height() - magicHeight);
@@ -120,6 +124,7 @@ Marvel.MarvelousEditor.prototype = {
     self.bindSaveFile();
     self.bindSaveFileAs();
     self.bindSaveSuccess();
+    self.bindViewModeEvents();
   },
 
   bindNewFile: function () {
@@ -180,6 +185,27 @@ Marvel.MarvelousEditor.prototype = {
           text: 'File saved successfully.',
           type: 'success'
         });
+    });
+  },
+
+  bindViewModeEvents: function () {
+    var self = this;
+    ipc.on('editor-mode', function () {
+      $('.editor-mode').removeClass('col-sm-6').removeClass('col-md-6')
+        .addClass('col-sm-12').addClass('col-md-12').show();
+      $('.preview-mode').hide();
+    });
+
+    ipc.on('preview-mode', function () {
+      $('.preview-mode').removeClass('col-sm-6').removeClass('col-md-6')
+        .addClass('col-sm-12').addClass('col-md-12').show();
+      $('.editor-mode').hide();
+    });
+
+    ipc.on('split-mode', function () {
+      $('.module-header > div, .modules > div').removeClass('col-sm-12').removeClass('col-md-12')
+        .addClass('col-sm-6').addClass('col-md-6')
+        .show();
     });
   },
 
