@@ -110,3 +110,7 @@ textarea {
 .editor-container {
   padding: 0;
 }
+
+.glyphicon.glyphicon-remove:hover {
+  color: #FF4242;
+}

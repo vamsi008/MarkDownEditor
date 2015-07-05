@@ -114,7 +114,16 @@ Marvel.MarvelousEditor.prototype = {
         fileId = clkd.attr('file-id');
 
       self.openFileWithId(fileId);
-    })
+    });
+
+    self.tabBar.on('click', '.glyphicon-remove', function (e) {
+      var clkd = $(this),
+        tabContext = clkd.parent(),
+        tabNumber = tabContext.index();
+
+      self.removeFileAt(tabNumber);
+      e.stopPropagation();
+    });
   },
 
   bindIPCEvents: function () {
@@ -213,6 +222,7 @@ Marvel.MarvelousEditor.prototype = {
     if (!file) { return; }
     var self = this;
     self.openedFile = file;
+    self.openedFileIndex = self.openedFiles.length;
     self.openedFiles.push(file);
     self.addTab(file);
 
@@ -234,6 +244,20 @@ Marvel.MarvelousEditor.prototype = {
     self.textarea.trigger('change');
 
     var tab = self.tabBar.find('.file-tab[file-id="' + file.id + '"]').addClass('selected-tab').siblings().removeClass('selected-tab');
+  },
+
+  removeFileAt: function (index) {
+    var self = this;
+    if (index < 0 || index >= self.openedFiles.length) return;
+    if (self.openedFiles.length === 1) return;
+
+    if (index === self.openedFileIndex) {
+      self.openFileAt((index-1 >= 0) ? index-1:index+1);
+    }
+
+    var fileIdToBeRemoved = self.openedFiles[index].id;
+    self.openedFiles.splice(index, 1);
+    self.tabBar.find('.file-tab[file-id="' + fileIdToBeRemoved + '"]').remove();
   },
 
   openFileWithId: function (id) {
@@ -268,6 +292,7 @@ Marvel.MarvelousEditor.prototype = {
   addTab: function (file) {
     var self = this;
     var tab = $('<div class="col-sm-2 col-md-1 col-lg-1 file-tab" />').attr('file-id', file.id).html(file.title).attr('title', file.filepath);
+    tab.append($('<span class="glyphicon glyphicon-remove pull-right" />'));
 
     self.tabBar.append(tab);
     tab.addClass('selected-tab').siblings().removeClass('selected-tab');
