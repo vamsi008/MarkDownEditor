@@ -4,15 +4,28 @@
   "version": "1.0.0",
   "author": "Team LeanTaaS <leantaas@imaginea.com>",
   "contributors": [
-    { "name": "Vamsi Chava", "email": "vamsi.chava@imaginea.com" },
-    { "name": "Kiran Danduprolu", "email": "kiran.d@imaginea.com" },
-    { "name": "Sudhir Chokkakula", "email": "sudhir.chokkakula@imaginea.com" },
-    { "name": "Srikanth Pothkanuri", "email": "srikanth.p@imaginea.com" }
+    {
+      "name": "Vamsi Chava",
+      "email": "vamsi.chava@imaginea.com"
+    },
+    {
+      "name": "Kiran Danduprolu",
+      "email": "kiran.d@imaginea.com"
+    },
+    {
+      "name": "Sudhir Chokkakula",
+      "email": "sudhir.chokkakula@imaginea.com"
+    },
+    {
+      "name": "Srikanth Pothkanuri",
+      "email": "srikanth.p@imaginea.com"
+    }
   ],
   "bugs": {
     "url": "https://github.com/hashd/Marvelous/issues"
   },
   "devDependencies": {
+    "electron-packager": "^5.0.0",
     "electron-prebuilt": "^0.27.1"
   },
   "keywords": [
@@ -26,6 +39,7 @@
   "private": true,
   "scripts": {
     "start": "electron .",
+    "build": "electron-packager . Marvelous --platform=linux --arch=all --version=0.27.3 --icon=app/img/marvelous.svg --out=./dist/ --overwrite",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }
