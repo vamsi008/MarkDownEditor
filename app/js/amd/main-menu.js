@@ -113,18 +113,24 @@ var menuTemplate = [{
   submenu: [{
     label: 'Editor Mode',
     accelerator: 'Control+Alt+E',
+    checked:'false',
+    type:'checkbox',
     click: function() {
       mainWindow.webContents.send('editor-mode');
     }
   }, {
     label: 'Preview Mode',
     accelerator: 'Control+Alt+P',
+    checked:'false',
+    type:'checkbox',
     click: function() {
       mainWindow.webContents.send('preview-mode');
     }
   }, {
     label: 'Split Mode',
     accelerator: 'Control+Alt+S',
+    checked:'true',
+    type:'checkbox',
     click: function() {
       mainWindow.webContents.send('split-mode');
     }
