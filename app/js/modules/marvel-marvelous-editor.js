@@ -33,6 +33,65 @@ Marvel.MarvelousEditor.prototype = {
     var self = this;
     self.bindWindowResizeHandler();
     self.bindTabSelection();
+    self.bindKeyboardShortcuts();
+    self.bindNewFileTabBarEvent();
+  },
+
+  bindKeyboardShortcuts: function () {
+    var self = this,
+      container = $('#marvelous-container');
+
+    container.on('keydown', null, 'alt+1', function () {
+      self.openFileAt(0);
+    });
+
+    container.on('keydown', null, 'alt+2', function () {
+      self.openFileAt(1);
+    });
+
+    container.on('keydown', null, 'alt+3', function () {
+      self.openFileAt(2);
+    });
+
+    container.on('keydown', null, 'alt+4', function () {
+      self.openFileAt(3);
+    });
+
+    container.on('keydown', null, 'alt+5', function () {
+      self.openFileAt(4);
+    });
+
+    container.on('keydown', null, 'alt+6', function () {
+      self.openFileAt(5);
+    });
+
+    container.on('keydown', null, 'alt+7', function () {
+      self.openFileAt(6);
+    });
+
+    container.on('keydown', null, 'alt+8', function () {
+      self.openFileAt(7);
+    });
+
+    container.on('keydown', null, 'alt+9', function () {
+      self.openFileAt(8);
+    });
+
+    container.on('keydown', null, 'alt+0', function () {
+      self.openFileAt(9);
+    });
+  },
+
+  bindNewFileTabBarEvent: function () {
+    var self = this;
+    self.tabBar.on('dblclick', function () {
+      var file = new Marvel.File();
+      self.openFile(file);
+    });
+
+    self.tabBar.on('dblclick', '.file-tab', function (e) {
+      e.stopPropagation();
+    });
   },
 
   bindWindowResizeHandler: function () {
