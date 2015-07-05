@@ -2,8 +2,6 @@ Marvel.MarvelousEditor = function() {
   this.tabBar = $('#tab-bar');
   this.textarea = $('#text-input');
   this.previewArea = $('#preview');
-  this.filetitleContainer = $('#file-title');
-  this.filepathContainer = $('#file-path');
 
   this.markdownEditor = undefined;
   this.openedFiles = [];
@@ -251,8 +249,6 @@ Marvel.MarvelousEditor.prototype = {
     self.openedFiles.push(file);
     self.addTab(file);
 
-    self.filetitleContainer.html(file.title);
-    self.filepathContainer.html(file.filepath);
     self.markdownEditor.setContent(file.content);
     self.textarea.trigger('change');
   },
@@ -263,8 +259,6 @@ Marvel.MarvelousEditor.prototype = {
     var file = self.openedFile = self.openedFiles[index];
     self.openedFileIndex = index;
 
-    self.filetitleContainer.html(file.title);
-    self.filepathContainer.html(file.filepath);
     self.markdownEditor.setContent(file.content);
     self.textarea.trigger('change');
 
@@ -306,6 +300,7 @@ Marvel.MarvelousEditor.prototype = {
         var file = self.openedFiles[i];
         file.update(filename, content);
         self.tabBar.find('.file-tab[file-id="' + file.id + '"]').html(file.title).attr('title', file.filepath)
+          .append($('<span class="glyphicon glyphicon-remove pull-right" />'));
         self.openFileAt(i);
         return i;
       }
