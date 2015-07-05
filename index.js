@@ -29,13 +29,7 @@ var menuTemplate = [{
     label: 'Help',
     accelerator: 'Control+H',
     selector: 'help:'
-  }, {
-    type: 'separator'
-  }, {
-    label: 'Quit',
-    accelerator: 'Control+Q',
-    selector: 'terminate:'
-  }, ]
+  } ]
 }, {
   label: 'File',
   submenu: [{
@@ -86,29 +80,42 @@ var menuTemplate = [{
   submenu: [{
     label: 'Undo',
     accelerator: 'Control+Z',
-    selector: 'undo:'
+    click: function() {
+      mainWindow.webContents.undo();
+    }
   }, {
     label: 'Redo',
     accelerator: 'Shift+Control+Z',
-    selector: 'redo:'
+      click: function() {
+      mainWindow.webContents.redo();
+    }
   }, {
     type: 'separator'
   }, {
     label: 'Cut',
     accelerator: 'Control+X',
-    selector: 'cut:'
+    click: function() {
+      mainWindow.webContents.cut();
+    }
   }, {
     label: 'Copy',
     accelerator: 'Control+C',
-    selector: 'copy:'
+    click: function() {
+      mainWindow.webContents.copy();
+    }
+    
   }, {
     label: 'Paste',
     accelerator: 'Control+V',
-    selector: 'paste:'
+    click: function() {
+      mainWindow.webContents.paste();
+    }
   }, {
     label: 'Select All',
     accelerator: 'Control+A',
-    selector: 'selectAll:'
+       click: function() {
+      mainWindow.webContents.selectAll();
+    }
   }]
 }, {
   label: 'View',
@@ -117,7 +124,7 @@ var menuTemplate = [{
     accelerator: 'Control+R',
     click: function() {
       mainWindow.reload();
-    }
+    }	
   }, {
     label: 'Toggle DevTools',
     accelerator: 'Control+Shift+I',
