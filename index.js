@@ -28,7 +28,7 @@ var menuTemplate = [{
   }, {
     label: 'Help',
     accelerator: 'Control+H',
-    selector: 'help:'
+    click: function () { require('shell').openExternal('http://github.com/vamsi008/MarkDownEditor') }
   } ]
 }, {
   label: 'File',
@@ -115,7 +115,10 @@ var menuTemplate = [{
     accelerator: 'Control+A',
        click: function() {
       mainWindow.webContents.selectAll();
-    }
+    },
+
+  
+
   }]
 }, {
   label: 'View',
