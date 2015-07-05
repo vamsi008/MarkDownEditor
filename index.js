@@ -177,7 +177,7 @@ ipc.on('editor-save-as', function (event, args) {
         if (err) {
           return false;
         }
-        mainWindow.webContents.send('editor-text',{ filename: filename.toString(), contents: data.toString() });
+        mainWindow.webContents.send('editor-text',{ fileId: args.fileId, filename: filename.toString(), contents: data.toString() });
       });
     }
   });

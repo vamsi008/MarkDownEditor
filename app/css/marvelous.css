@@ -40,15 +40,33 @@ body.container {
 }
 
 .module-header {
-  background: #3CA2A2;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
 }
 
 .module-header h3 {
   text-transform: uppercase;
-  color: #fff;
+  color: #555;
   margin: 0;
-  font-size: 1em;
-  padding: 4px 2px;
+  font-size: 0.8em;
+  padding: 2px;
+}
+
+.file-tab {
+  cursor: pointer;
+  /*background: #06354D;*/
+  background: #444;
+  padding: 4px 8px;
+  color: #fff;
+  font-size: 0.9em;
+  border-right: 1px solid #777;
+  border-top: 3px solid #444;
+}
+
+.file-tab.selected-tab {
+  color: #06354D;
+  background: #f5f5f5;
+  border-top: 3px solid #04ADEA;
 }
 
 #preview {
@@ -65,6 +83,11 @@ body.container {
 
 .md-editor {
   border: 1px solid #ddd;
+}
+
+#tab-bar {
+  padding: 0;
+  background: #444;
 }
 
 textarea {
