@@ -37,8 +37,23 @@ Marvel.MarvelousEditor.prototype = {
     var self = this;
     self.bindWindowResizeHandler();
     self.bindTabSelection();
+    //self.bindTabSortableEvent();
     self.bindKeyboardShortcuts();
     self.bindNewFileTabBarEvent();
+  },
+
+  bindTabSortableEvent: function () {
+    var self = this,
+      tabBar = document.getElementById("tab-bar");
+
+    Sortable.create(tabBar, {
+      animation: 300,
+      draggable: '.file-tab',
+      onUpdate: function (e) {
+        var item = e.item;
+        console.log(item);
+      }
+    });
   },
 
   bindKeyboardShortcuts: function () {

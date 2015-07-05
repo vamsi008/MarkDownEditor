@@ -1,4 +1,5 @@
 $ = jQuery = require('./vendor/js/jquery-2.1.4.js');
+Sortable = require('./vendor/js/Sortable.min.js');
 ipc = require('ipc');
 remote = require('remote');
 Menu = remote.require('menu');
