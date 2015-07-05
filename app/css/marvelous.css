@@ -125,3 +125,7 @@ textarea {
 .glyphicon.glyphicon-remove:hover {
   color: #FF4242;
 }
+
+.glyphicon {
+  transition: color 0.3s ease;
+}
