@@ -23,6 +23,12 @@ npm install
 npm start
 ```
 
+### 4. Build distribution using `npm run build`
+
+``` bash
+npm run build
+```
+
 ## Screenshots
 ![Marvelous Screenshot](vendor/img/marvelous.png)
 
