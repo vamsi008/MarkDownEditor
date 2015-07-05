@@ -27,8 +27,13 @@ npm start
 ### 4. Build distribution using `npm run build`
 
 ``` bash
+npm install -g gulp
 npm run build
 ```
+
+Distribution zips can be found under dist folder inside the project folder. Do not commit these files to repo.
+
+Build files can be found under build folder inside the project folder. Do not commit these files either to the repo.
 
 ## Screenshots
 ![Marvelous Screenshot](vendor/img/marvelous.png)
