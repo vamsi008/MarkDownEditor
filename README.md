@@ -1,4 +1,5 @@
 # Marvelous
+![Logo](app/img/marvelous.png)
 
 Marvelous is a cross platform markdown editor and viewer built using Github Atom's shell - Electron.
 
