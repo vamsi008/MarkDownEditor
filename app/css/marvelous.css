@@ -63,6 +63,10 @@ body.container {
   border-top: 3px solid #444;
 }
 
+.file-tab.unsaved {
+  border-top-color: #FF370F;
+}
+
 .file-tab.selected-tab {
   color: #06354D;
   background: #f5f5f5;
