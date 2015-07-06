@@ -2,8 +2,8 @@ Marvel.MarvelousEditor = function() {
   this.tabBar = $('#tab-bar');
   this.textarea = $('#text-input');
   this.previewArea = $('#preview');
-
   this.markdownEditor = undefined;
+
   this.openedFiles = [];
   this.openedFile = undefined;
   this.openedFileIndex = undefined;
@@ -23,6 +23,12 @@ Marvel.MarvelousEditor.prototype = {
 
         if (self.openedFile) {
           self.openedFile.updateContent(e.getContent());
+          var fileId = self.openedFile.id;
+          if (self.openedFile.saved) {
+            self.tabBar.find('.file-tab[file-id="' + fileId + '"]').removeClass('unsaved');
+          } else {
+            self.tabBar.find('.file-tab[file-id="' + fileId + '"]').addClass('unsaved');
+          }
         }
       }
     }).trigger('change');
@@ -222,12 +228,6 @@ Marvel.MarvelousEditor.prototype = {
     });
   },
 
-  bindLoadingTabs:function(){
-   ipc.on('load-tabs', function () {
-        console.log("Loading the tabs....");
-    });
-  },
-
   bindSaveSuccess: function () {
     var self = this;
     ipc.on('save-success', function () {
@@ -236,6 +236,8 @@ Marvel.MarvelousEditor.prototype = {
           text: 'File saved successfully.',
           type: 'success'
         });
+        self.openedFile.setSaved();
+        self.tabBar.find('.selected-tab').removeClass('unsaved');
     });
   },
 
@@ -290,8 +292,9 @@ Marvel.MarvelousEditor.prototype = {
   openFileAt: function (index) {
     var self = this;
     if (index < 0 || index >= self.openedFiles.length) return;
-    var file = self.openedFile = self.openedFiles[index];
+    self.openedFile = self.openedFiles[index];
     self.openedFileIndex = index;
+    var file = self.openedFile;
 
     self.markdownEditor.setContent(file.content);
     self.textarea.trigger('change');
@@ -304,11 +307,34 @@ Marvel.MarvelousEditor.prototype = {
     if (index < 0 || index >= self.openedFiles.length) return;
     if (self.openedFiles.length === 1) return;
 
+    if (self.openedFiles[index].saved === false) {
+      swal({
+        title: "Are you sure?",
+        text: "You will lose unsaved changes!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes"
+      }, function (confirm) {
+        if (confirm) {
+          self.deleteTabAt(index);
+        }
+      });
+    } else {
+      self.deleteTabAt(index);
+    }
+  },
+
+  deleteTabAt: function (index) {
+    var self = this,
+      fileIdToBeRemoved = self.openedFiles[index].id;
+
+    if (index < 0 || index >= self.openedFiles.length) return;
+    if (self.openedFiles.length === 1) return;
+
     if (index === self.openedFileIndex) {
       self.openFileAt((index-1 >= 0) ? index-1:index+1);
     }
 
-    var fileIdToBeRemoved = self.openedFiles[index].id;
     self.openedFiles.splice(index, 1);
     self.tabBar.find('.file-tab[file-id="' + fileIdToBeRemoved + '"]').remove();
   },
@@ -366,6 +392,9 @@ Marvel.MarvelousEditor.prototype = {
 
     self.tabBar.find('.new-file').before(tab);
     tab.addClass('selected-tab').siblings().removeClass('selected-tab');
+    if (!file.saved) {
+      tab.addClass('unsaved');
+    }
   },
 
   loadLastSession: function () {

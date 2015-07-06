@@ -86,6 +86,11 @@ body.container {
   color: #fff;
 }
 
+.file-tab.unsaved:after {
+  content: '*';
+  margin-left: 1px;
+}
+
 /* Overrides */
 .btn-toolbar {
   padding: 4px 0;
@@ -128,4 +133,8 @@ textarea {
 
 .glyphicon {
   transition: color 0.3s ease;
+}
+
+.sa-icon {
+  box-sizing: content-box !important;
 }

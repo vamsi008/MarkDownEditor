@@ -163,7 +163,7 @@ var menuTemplate = [{
     label: 'Close',
     accelerator: 'Control+Q',
     click: function () {
-       mainWindow.webContents.send('window-close');
+      mainWindow.webContents.send('window-close');
     }
   }]
 }];

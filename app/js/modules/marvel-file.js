@@ -31,6 +31,6 @@ Marvel.File.prototype = {
   setSaved: function () {
     var self = this;
     self.saved = true;
-    self.originalContent = self.saved;
+    self.originalContent = self.content;
   }
 }
