@@ -7,7 +7,12 @@ var app = require('app'),
   fs = require('fs'),
   clipboard = require('clipboard'),
   ipc = require('ipc'),
-  mainMenu=require('./app/js/amd/main-menu.js');
+  mainMenu=require('./app/js/amd/main-menu.js'),
+  mkdirp = require('mkdirp');
+
+var homePath = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'],
+  sessionsFolder = homePath + '/.marvelous/sessions';
+  lastSessionFile = sessionsFolder + '/last-session.json';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
@@ -22,6 +27,17 @@ app.on('window-all-closed', function() {
 ipc.on('editor-save', function (event, args) {
   fs.writeFileSync(args.filename, args.content);
   event.sender.send('save-success');
+});
+
+ipc.on('editor-save-and-close', function (event, args) {
+  mkdirp(sessionsFolder, function (err) {
+    if (err) {
+      console.log("Cant create session file");
+    } else {
+      fs.writeFileSync(lastSessionFile, JSON.stringify(args));
+    }
+    mainWindow.close();
+  });
 });
 
 ipc.on('editor-save-as', function (event, args) {
@@ -41,6 +57,17 @@ ipc.on('editor-save-as', function (event, args) {
         mainWindow.webContents.send('editor-text',{ fileId: args.fileId, filename: filename.toString(), contents: data.toString() });
       });
     }
+  });
+});
+
+ipc.on('get-last-session' , function(event, args) {
+  fs.readFile(lastSessionFile, function(err, data) {
+    if (err) {
+      mainWindow.webContents.send('editor-new');
+      return false;
+    }
+
+    mainWindow.webContents.send('load-session', JSON.parse(data));
   });
 });
 

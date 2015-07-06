@@ -14,5 +14,4 @@ marked.setOptions({
 
 $(document).ready(function () {
   marvelInstance = new Marvel.MarvelousEditor();
-  marvelInstance.openFile(new Marvel.File());
 });

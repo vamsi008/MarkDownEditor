@@ -29,6 +29,7 @@ Marvel.MarvelousEditor.prototype = {
 
     self.bindEvents();
     self.bindIPCEvents();
+    self.loadLastSession();
   },
 
   bindEvents: function () {
@@ -157,6 +158,18 @@ Marvel.MarvelousEditor.prototype = {
     self.bindSaveFileAs();
     self.bindSaveSuccess();
     self.bindViewModeEvents();
+    self.bindCloseWindow();
+    self.bindLoadSession();
+  },
+
+  bindCloseWindow: function () {
+  	var self = this;
+ 	  ipc.on('window-close', function (obj) {
+      var fileCount = self.openedFiles.length,
+        state = { files: self.openedFiles, openedFileIndex: self.openedFileIndex };
+
+      ipc.send('editor-save-and-close', state);
+    });
   },
 
   bindNewFile: function () {
@@ -209,6 +222,12 @@ Marvel.MarvelousEditor.prototype = {
     });
   },
 
+  bindLoadingTabs:function(){
+   ipc.on('load-tabs', function () {
+        console.log("Loading the tabs....");
+    });
+  },
+
   bindSaveSuccess: function () {
     var self = this;
     ipc.on('save-success', function () {
@@ -217,6 +236,21 @@ Marvel.MarvelousEditor.prototype = {
           text: 'File saved successfully.',
           type: 'success'
         });
+    });
+  },
+
+  bindLoadSession: function () {
+    var self = this;
+    ipc.on('load-session', function (session) {
+      if (session.files) {
+        for (var i = 0, length = session.files.length; i < length; i++) {
+          var file = session.files[i];
+          self.openFile(new Marvel.File(file.filepath, file.content, file.id, file.originalContent));
+        }
+        self.openFileAt(session.openedFileIndex);
+      } else {
+        self.openFile(new Marvel.File());
+      }
     });
   },
 
@@ -332,5 +366,9 @@ Marvel.MarvelousEditor.prototype = {
 
     self.tabBar.find('.new-file').before(tab);
     tab.addClass('selected-tab').siblings().removeClass('selected-tab');
+  },
+
+  loadLastSession: function () {
+    ipc.send('get-last-session');
   }
 };

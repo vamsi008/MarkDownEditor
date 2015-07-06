@@ -28,7 +28,8 @@
     "electron-packager": "^5.0.0",
     "electron-prebuilt": "^0.27.1",
     "gulp": "^3.9.0",
-    "gulp-zip": "^3.0.2"
+    "gulp-zip": "^3.0.2",
+    "mkdirp": "~0.5.1"
   },
   "keywords": [
     "atom-shell",

@@ -1,7 +1,13 @@
-Marvel.File = function (filepath, content) {
+Marvel.File = function (filepath, content, id, originalContent) {
   var self = this;
   self.id = 'mf-' + (+new Date());
+
   self.update(filepath, content);
+  if (id !== undefined) {
+    this.id = id;
+    this.originalContent = originalContent;
+    this.saved = (this.content === this.originalContent);
+  }
 };
 
 Marvel.File.prototype = {
