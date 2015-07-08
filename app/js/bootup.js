@@ -13,10 +13,10 @@ var menu = Menu.buildFromTemplate(otherMenu(remote.getCurrentWindow()));
 
 window.addEventListener('contextmenu', function (e) {
   e.preventDefault();
-  var s=e.srcElement.attributes[0];
-  
-  if(s.textContent.indexOf('selected-tab')>0){
-	  
+  var s=e.srcElement.attributes.getNamedItem('class');
+
+  if(s!=undefined && s.textContent.indexOf('file-tab')>0){
+
 	  menu = Menu.buildFromTemplate(tabMenu(remote.getCurrentWindow()));
 	  menu.popup(remote.getCurrentWindow());
   }else if(s.textContent === "row tabs"){
@@ -26,5 +26,5 @@ window.addEventListener('contextmenu', function (e) {
 	  menu = Menu.buildFromTemplate(otherMenu(remote.getCurrentWindow()));
 	  menu.popup(remote.getCurrentWindow());
 	  }
-   
+
 }, false);

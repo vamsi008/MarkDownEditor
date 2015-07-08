@@ -40,7 +40,7 @@ Marvel.MarvelousEditor.prototype = {
     self.bindEvents();
     self.bindIPCEvents();
     self.loadLastSession();
-	
+
   },
 
   bindEvents: function () {
@@ -160,8 +160,8 @@ Marvel.MarvelousEditor.prototype = {
       e.stopPropagation();
     });
   },
-  
-  
+
+
 
   bindIPCEvents: function () {
     var self = this;
@@ -173,6 +173,7 @@ Marvel.MarvelousEditor.prototype = {
     self.bindViewModeEvents();
     self.bindCloseWindow();
     self.bindLoadSession();
+    self.bindCloseTab();
   },
 
   bindCloseWindow: function () {
@@ -247,7 +248,7 @@ Marvel.MarvelousEditor.prototype = {
         self.tabBar.find('.selected-tab').removeClass('unsaved');
     });
   },
-  
+
 
   bindLoadSession: function () {
     var self = this;
@@ -419,14 +420,13 @@ Marvel.MarvelousEditor.prototype = {
   loadLastSession: function () {
     ipc.send('get-last-session');
   },
-  closeTab: function () {
-	ipc.on('browser-tab-close', function () {
-	self.tabBar.trigger("click");
-     
+  bindCloseTab: function () {
+    self=this;
+    ipc.on('close-tab', function () {
+      console.log("Into the on close tab function");
+      self.tabBar.trigger("click");
     });
-    
+
   }
-  
-  
-  
+
 };

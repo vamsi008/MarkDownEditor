@@ -29,10 +29,6 @@ ipc.on('editor-save', function (event, args) {
   event.sender.send('save-success');
 });
 
-ipc.on('close-tab1', function (event, args) {
-    event.sender.send('browser-tab-close');
-});
-
 ipc.on('editor-save-and-close', function (event, args) {
   mkdirp(sessionsFolder, function (err) {
     if (err) {
@@ -98,6 +94,6 @@ app.on('ready', function() {
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
-  
-  
+
+
 });
