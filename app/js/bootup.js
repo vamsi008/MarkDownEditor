@@ -5,11 +5,24 @@ remote = require('remote');
 Menu = remote.require('menu');
 MenuItem = remote.require('menu-item');
 otherMenu=require('./app/js/amd/pop-up-menu.js');
+tabMenu = require('./app/js/amd/tab-menu.js');
 
 $window = $(window);
 
 var menu = Menu.buildFromTemplate(otherMenu(remote.getCurrentWindow()));
+
 window.addEventListener('contextmenu', function (e) {
   e.preventDefault();
+  var s=e.srcElement.attributes[0];
+  
+  if(s.textContent.indexOf('selected-tab')>0){
+	  
+	  menu = Menu.buildFromTemplate(tabMenu(remote.getCurrentWindow()));
+  }else{
+	  menu = Menu.buildFromTemplate(otherMenu(remote.getCurrentWindow()));
+  }
+  //if it comes to tab
+    
+  //else
   menu.popup(remote.getCurrentWindow());
 }, false);
