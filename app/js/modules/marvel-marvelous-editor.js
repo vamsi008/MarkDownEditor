@@ -2,6 +2,8 @@ Marvel.MarvelousEditor = function() {
   this.tabBar = $('#tab-bar');
   this.textarea = $('#text-input');
   this.previewArea = $('#preview');
+  this.editor_view = $("#editor");
+  this.default_view = $("#default");
   this.markdownEditor = undefined;
 
   this.openedFiles = [];
@@ -14,6 +16,8 @@ Marvel.MarvelousEditor = function() {
 Marvel.MarvelousEditor.prototype = {
   init: function () {
     var self = this;
+    this.default_view.hide();
+   // this.editor_view.hide();
     self.textarea.markdown({
       hiddenButtons: ['cmdPreview'],
       onChange: function (e) {
@@ -253,7 +257,11 @@ Marvel.MarvelousEditor.prototype = {
           var file = session.files[i];
           self.openFile(new Marvel.File(file.filepath, file.content, file.id, file.originalContent));
         }
+        if(session.files.length==0){
+          self.openFile(new Marvel.File());
+        }else{
         self.openFileAt(session.openedFileIndex);
+        }
       } else {
         self.openFile(new Marvel.File());
       }
@@ -286,6 +294,10 @@ Marvel.MarvelousEditor.prototype = {
     var self = this;
     self.openedFile = file;
     self.openedFileIndex = self.openedFiles.length;
+    if(self.openedFileIndex===0){
+       this.editor_view.show();
+       this.default_view.hide();
+    }
     self.openedFiles.push(file);
     self.addTab(file);
 
@@ -309,7 +321,7 @@ Marvel.MarvelousEditor.prototype = {
   removeFileAt: function (index) {
     var self = this;
     if (index < 0 || index >= self.openedFiles.length) return;
-    if (self.openedFiles.length === 1) return;
+    //if (self.openedFiles.length === 1) return;
 
     if (self.openedFiles[index].saved === false) {
       swal({
@@ -333,7 +345,10 @@ Marvel.MarvelousEditor.prototype = {
       fileIdToBeRemoved = self.openedFiles[index].id;
 
     if (index < 0 || index >= self.openedFiles.length) return;
-    if (self.openedFiles.length === 1) return;
+    if (self.openedFiles.length === 1){
+      this.editor_view.hide();
+      this.default_view.show();
+    }
 
     if (index === self.openedFileIndex) {
       self.openFileAt((index-1 >= 0) ? index-1:index+1);
