@@ -18,11 +18,13 @@ window.addEventListener('contextmenu', function (e) {
   if(s.textContent.indexOf('selected-tab')>0){
 	  
 	  menu = Menu.buildFromTemplate(tabMenu(remote.getCurrentWindow()));
-  }else{
-	  menu = Menu.buildFromTemplate(otherMenu(remote.getCurrentWindow()));
+	  menu.popup(remote.getCurrentWindow());
+  }else if(s.textContent === "row tabs"){
+	  e.preventDefault();
   }
-  //if it comes to tab
-    
-  //else
-  menu.popup(remote.getCurrentWindow());
+  else{
+	  menu = Menu.buildFromTemplate(otherMenu(remote.getCurrentWindow()));
+	  menu.popup(remote.getCurrentWindow());
+	  }
+   
 }, false);

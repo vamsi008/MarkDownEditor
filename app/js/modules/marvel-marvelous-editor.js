@@ -36,6 +36,7 @@ Marvel.MarvelousEditor.prototype = {
     self.bindEvents();
     self.bindIPCEvents();
     self.loadLastSession();
+	
   },
 
   bindEvents: function () {
@@ -132,7 +133,7 @@ Marvel.MarvelousEditor.prototype = {
     var self = this,
       magicHeight = 72;
 
-    $window.on('resize', function () {
+    $(window).on('resize', function () {
       $('#text-input, #preview').height($window.height() - $('#tab-bar').height() - $('.header').height() - $('.module-header').height() - magicHeight);
     }).trigger('resize');
   },
@@ -155,6 +156,8 @@ Marvel.MarvelousEditor.prototype = {
       e.stopPropagation();
     });
   },
+  
+  
 
   bindIPCEvents: function () {
     var self = this;
@@ -240,6 +243,7 @@ Marvel.MarvelousEditor.prototype = {
         self.tabBar.find('.selected-tab').removeClass('unsaved');
     });
   },
+  
 
   bindLoadSession: function () {
     var self = this;
@@ -399,5 +403,15 @@ Marvel.MarvelousEditor.prototype = {
 
   loadLastSession: function () {
     ipc.send('get-last-session');
+  },
+  closeTab: function () {
+	ipc.on('browser-tab-close', function () {
+	self.tabBar.trigger("click");
+     
+    });
+    
   }
+  
+  
+  
 };
