@@ -38,7 +38,7 @@ var menuTemplate = [{
         filters: [
           { name: 'All', extensions: ['md', 'markdown', 'MD', 'txt', 'TXT' ]},
           { name: 'Markdown', extensions: ['md', 'markdown', 'MD' ]},
-          { name: 'Plain-text', extensions: ['txt', 'TXT' ]}
+          { name: 'Plaintext', extensions: ['txt', 'TXT' ]}
         ]
       }, function(filename) {
         if (filename) {

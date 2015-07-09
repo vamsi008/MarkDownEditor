@@ -80,6 +80,7 @@ app.on('ready', function() {
     title: 'Marvelous'
   });
   mainWindow.maximize(true);
+   mainWindow.openDevTools();
  	mainWindow.setMenu(Menu.buildFromTemplate(mainMenu(mainWindow)));
 
   // and load the index.html of the app.
@@ -93,4 +94,6 @@ app.on('ready', function() {
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
+
+
 });
