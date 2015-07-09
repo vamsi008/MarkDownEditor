@@ -259,13 +259,8 @@ Marvel.MarvelousEditor.prototype = {
   bindSaveSuccess: function () {
     var self = this;
     ipc.on('save-success', function () {
-        swal({
-          title: 'Success',
-          text: 'File saved successfully.',
-          type: 'success'
-        });
-        self.openedFile.setSaved();
-        self.tabBar.find('.selected-tab').removeClass('unsaved');
+      self.openedFile.setSaved();
+      self.tabBar.find('.selected-tab').removeClass('unsaved');
     });
   },
 
@@ -334,7 +329,7 @@ Marvel.MarvelousEditor.prototype = {
   removeFileAt: function (index) {
     var self = this;
     if (index < 0 || index >= self.openedFiles.length) return;
-    //if (self.openedFiles.length === 1) return;
+    if (self.openedFiles.length === 1) return;
 
     if (self.openedFiles[index].saved === false) {
       swal({
@@ -364,6 +359,19 @@ Marvel.MarvelousEditor.prototype = {
     }
 
     return -1;
+  },
+
+  removeFilesExceptId: function (id) {
+    var self = this;
+    self.tabBar.find('.file-tab').each(function () {
+      var clkd = $(this),
+        fileId = clkd.attr('file-id');
+
+      if (fileId !== id) {
+        self.removeFileWithId(fileId);
+      }
+    });
+    self.openFileWithId(id);
   },
 
   deleteTabAt: function (index) {
@@ -450,6 +458,12 @@ Marvel.MarvelousEditor.prototype = {
     ipc.on('close-tab', function (e) {
       if (self.contextMenuElmt.hasClass('file-tab')) {
         self.removeFileWithId(self.contextMenuElmt.attr('file-id'));
+      }
+    });
+
+    ipc.on('close-other-tabs', function (e) {
+      if (self.contextMenuElmt.hasClass('file-tab')) {
+        self.removeFilesExceptId(self.contextMenuElmt.attr('file-id'));
       }
     });
   }
