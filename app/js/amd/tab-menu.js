@@ -1,19 +1,15 @@
 module.exports = function menu(mainWindow) {
-
   var otherMenu = [{
-    label: 'close tab',
-    click: function() {
-      mainWindow.webContents.send('close-tab');
+    label: 'Close Tab',
+    click: function(e) {
+      mainWindow.webContents.send('close-tab', e);
     }
   }, {
-    label: 'close other tabs',
-    click: function() {
-      mainWindow.webContents.send('close-other-tabs');
+    label: 'Close Other Tabs',
+    click: function(e) {
+      mainWindow.webContents.send('close-other-tabs', e);
     }
-  }
-
-  ];
-
+  }];
 
   return otherMenu;
 }

@@ -10,21 +10,3 @@ tabMenu = require('./app/js/amd/tab-menu.js');
 $window = $(window);
 
 var menu = Menu.buildFromTemplate(otherMenu(remote.getCurrentWindow()));
-
-window.addEventListener('contextmenu', function (e) {
-  e.preventDefault();
-  var s=e.srcElement.attributes.getNamedItem('class');
-
-  if(s!=undefined && s.textContent.indexOf('file-tab')>0){
-
-	  menu = Menu.buildFromTemplate(tabMenu(remote.getCurrentWindow()));
-	  menu.popup(remote.getCurrentWindow());
-  }else if(s.textContent === "row tabs"){
-	  e.preventDefault();
-  }
-  else{
-	  menu = Menu.buildFromTemplate(otherMenu(remote.getCurrentWindow()));
-	  menu.popup(remote.getCurrentWindow());
-	  }
-
-}, false);

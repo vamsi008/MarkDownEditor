@@ -10,6 +10,8 @@ Marvel.MarvelousEditor = function() {
   this.openedFile = undefined;
   this.openedFileIndex = undefined;
 
+  this.contextMenuElmt = undefined;
+
   this.init();
 };
 
@@ -50,6 +52,7 @@ Marvel.MarvelousEditor.prototype = {
     self.bindTabSortableEvent();
     self.bindKeyboardShortcuts();
     self.bindNewFileTabBarEvent();
+    self.bindContextMenuEvents();
   },
 
   bindTabSortableEvent: function () {
@@ -161,7 +164,28 @@ Marvel.MarvelousEditor.prototype = {
     });
   },
 
+  bindContextMenuEvents: function () {
+    var self = this;
+    $window.on('contextmenu', function (e) {
+      var clkd = $(e.target);
+      self.contextMenuElmt = clkd;
 
+      e.preventDefault();
+
+      if (clkd.hasClass('file-tab')) {
+        menu = Menu.buildFromTemplate(tabMenu(remote.getCurrentWindow()));
+        $.each(menu.items, function (d, i) {
+          d.tabFileId = clkd.attr('file-id');
+        });
+        menu.popup(remote.getCurrentWindow());
+      } else if (clkd.hasClass('tabs')){
+        e.preventDefault();
+      } else {
+        menu = Menu.buildFromTemplate(otherMenu(remote.getCurrentWindow()));
+        menu.popup(remote.getCurrentWindow());
+      }
+    });
+  },
 
   bindIPCEvents: function () {
     var self = this;
@@ -248,7 +272,6 @@ Marvel.MarvelousEditor.prototype = {
         self.tabBar.find('.selected-tab').removeClass('unsaved');
     });
   },
-
 
   bindLoadSession: function () {
     var self = this;
@@ -341,6 +364,19 @@ Marvel.MarvelousEditor.prototype = {
     }
   },
 
+  removeFileWithId: function (id) {
+    var self = this;
+    if (!id) return;
+    for (var i = 0, length = self.openedFiles.length; i < length; i++) {
+      if (self.openedFiles[i].id == id) {
+        self.removeFileAt(i);
+        return i;
+      }
+    }
+
+    return -1;
+  },
+
   deleteTabAt: function (index) {
     var self = this,
       fileIdToBeRemoved = self.openedFiles[index].id;
@@ -420,13 +456,13 @@ Marvel.MarvelousEditor.prototype = {
   loadLastSession: function () {
     ipc.send('get-last-session');
   },
+
   bindCloseTab: function () {
-    self=this;
-    ipc.on('close-tab', function () {
-      console.log("Into the on close tab function");
-      self.tabBar.trigger("click");
+    var self = this;
+    ipc.on('close-tab', function (e) {
+      if (self.contextMenuElmt.hasClass('file-tab')) {
+        self.removeFileWithId(self.contextMenuElmt.attr('file-id'));
+      }
     });
-
   }
-
 };
