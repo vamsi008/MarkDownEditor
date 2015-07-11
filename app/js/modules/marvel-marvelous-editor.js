@@ -411,7 +411,8 @@ Marvel.MarvelousEditor.prototype = {
       if (self.openedFiles[i].id == id) {
         var file = self.openedFiles[i];
         file.update(filename, content);
-        self.tabBar.find('.file-tab[file-id="' + file.id + '"]').html(file.title).attr('title', file.filepath)
+        var fileNameElement = "<span class='file-name'>"+file.title+"</span>";
+        self.tabBar.find('.file-tab[file-id="' + file.id + '"]').html(fileNameElement).attr('title', file.filepath)
           .append($('<span class="glyphicon glyphicon-remove pull-right" />'));
         self.openFileAt(i);
         return i;
@@ -439,7 +440,8 @@ Marvel.MarvelousEditor.prototype = {
 
   addTab: function (file) {
     var self = this;
-    var tab = $('<div class="col-sm-2 col-md-1 col-lg-1 file-tab" />').attr('file-id', file.id).html(file.title).attr('title', file.filepath);
+    var fileNameElement = "<span class='file-name'>"+file.title+"</span>";
+    var tab = $('<div class="file-tab" />').attr('file-id', file.id).html(fileNameElement).attr('title', file.filepath);
     tab.append($('<span class="glyphicon glyphicon-remove pull-right" />'));
 
     self.tabBar.find('.new-file').before(tab);
