@@ -19,9 +19,18 @@ Marvel.MarvelousEditor.prototype = {
     self.textarea.markdown({
       hiddenButtons: ['cmdPreview'],
       onChange: function (e) {
+        var previewWidth = self.previewArea.width();
         self.markdownEditor = e;
         self.previewArea.html(marked(e.getContent()));
         self.previewArea.find('a').attr('target', '_blank');
+        self.previewArea.find('img').each(function () {
+          var img = $(this);
+          img.load(function () {
+            if (img.width() > previewWidth) {
+              img.width('100%');
+            }
+          });
+        });
 
         if (self.openedFile) {
           self.openedFile.updateContent(e.getContent());
