@@ -168,3 +168,13 @@ body.container {
   margin-top: 0;
   margin-bottom: 0;
 }
+
+.CodeMirror {
+  font-family: 'Ubuntu Mono', 'Consolas', 'Roboto Mono', 'Droid Sans Mono', 'Menlo', 'Monaco', 'Fantasque Sans Mono', monospace;
+  font-size: 16px;
+  color: #444;
+}
+
+.cm-s-paper .cm-header {
+  color: #444;
+}
