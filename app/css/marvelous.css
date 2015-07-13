@@ -47,9 +47,9 @@ body.container {
 
 .module-header h3 {
   text-transform: uppercase;
-  color: #555;
+  color: #222;
   margin: 0;
-  font-size: 1em;
+  font-size: 0.8em;
   padding: 2px;
   text-shadow:1px 1px #fff;
 }
@@ -85,7 +85,7 @@ body.container {
   white-space: nowrap;
   text-overflow:ellipsis;
   overflow:hidden;
-  width:80%;
+  min-width: 120px;
   display: inline-block;
 }
 .preview-container {
@@ -161,4 +161,10 @@ body.container {
 
 .sa-icon {
   box-sizing: content-box !important;
+}
+
+.editor-toolbar:before,
+.editor-toolbar:after {
+  margin-top: 0;
+  margin-bottom: 0;
 }

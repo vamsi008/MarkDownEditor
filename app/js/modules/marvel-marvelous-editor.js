@@ -16,38 +16,40 @@ Marvel.MarvelousEditor = function() {
 Marvel.MarvelousEditor.prototype = {
   init: function () {
     var self = this;
-    self.textarea.markdown({
-      hiddenButtons: ['cmdPreview'],
-      onChange: function (e) {
-        var previewWidth = self.previewArea.width();
-        self.markdownEditor = e;
-        self.previewArea.html(marked(e.getContent()));
-        self.previewArea.find('a').attr('target', '_blank');
-        self.previewArea.find('img').each(function () {
-          var img = $(this);
-          img.load(function () {
-            if (img.width() > previewWidth) {
-              img.width('100%');
-            }
-          });
-        });
-
-        if (self.openedFile) {
-          self.openedFile.updateContent(e.getContent());
-          var fileId = self.openedFile.id;
-          if (self.openedFile.saved) {
-            self.tabBar.find('.file-tab[file-id="' + fileId + '"]').removeClass('unsaved');
-          } else {
-            self.tabBar.find('.file-tab[file-id="' + fileId + '"]').addClass('unsaved');
+    self.markdownEditor = new SimpleMDE({
+      element: self.textarea[0],
+      autofocus: true,
+      indentWithTabs: true,
+      tabSize: 4
+    });
+    self.markdownEditor.render();
+    self.markdownEditor.codemirror.on('change', function (e) {
+      var previewWidth = self.previewArea.width();
+      self.previewArea.html(marked(self.markdownEditor.value()));
+      self.previewArea.find('a').attr('target', '_blank');
+      self.previewArea.find('img').each(function () {
+        var img = $(this);
+        img.load(function () {
+          if (img.width() > previewWidth) {
+            img.width('100%');
           }
+        });
+      });
+
+      if (self.openedFile) {
+        self.openedFile.updateContent(self.markdownEditor.value());
+        var fileId = self.openedFile.id;
+        if (self.openedFile.saved) {
+          self.tabBar.find('.file-tab[file-id="' + fileId + '"]').removeClass('unsaved');
+        } else {
+          self.tabBar.find('.file-tab[file-id="' + fileId + '"]').addClass('unsaved');
         }
       }
-    }).trigger('change');
+    });
 
     self.bindEvents();
     self.bindIPCEvents();
     self.loadLastSession();
-
   },
 
   bindEvents: function () {
@@ -143,10 +145,12 @@ Marvel.MarvelousEditor.prototype = {
 
   bindWindowResizeHandler: function () {
     var self = this,
-      magicHeight = 72;
+      previewMagicHeight = 24,
+      editorMagicHeight = 102;
 
     $(window).on('resize', function () {
-      $('#text-input, #preview').height($window.height() - $('#tab-bar').height() - $('.header').height() - $('.module-header').height() - magicHeight);
+      $('#preview').height($window.height() - $('#tab-bar').height() - $('.header').height() - $('.module-header').height() - previewMagicHeight);
+      $('.CodeMirror').height($window.height() - $('#tab-bar').height() - $('.header').height() - $('.module-header').height() - editorMagicHeight);
     }).trigger('resize');
   },
 
@@ -243,10 +247,10 @@ Marvel.MarvelousEditor.prototype = {
       if (self.openedFile.filepath) {
         ipc.send('editor-save', {
           filename: self.openedFile.filepath,
-          content: self.markdownEditor.getContent()
+          content: self.markdownEditor.value()
         });
       } else {
-        var content = self.markdownEditor ? self.markdownEditor.getContent() : self.textarea.html();
+        var content = self.markdownEditor ? self.markdownEditor.value() : self.textarea.html();
         ipc.send('editor-save-as', {
           fileId: self.openedFile.id,
           content: content
@@ -260,7 +264,7 @@ Marvel.MarvelousEditor.prototype = {
     ipc.on('editor-save-as', function () {
       ipc.send('editor-save-as', {
         fileId: self.openedFile.id,
-        content: self.markdownEditor.getContent()
+        content: self.markdownEditor.value()
       });
     });
   },
@@ -318,7 +322,7 @@ Marvel.MarvelousEditor.prototype = {
     self.openedFiles.push(file);
     self.addTab(file);
 
-    self.markdownEditor.setContent(file.content);
+    self.markdownEditor.codemirror.getDoc().setValue(file.content);
     self.textarea.trigger('change');
   },
 
@@ -329,7 +333,7 @@ Marvel.MarvelousEditor.prototype = {
     self.openedFileIndex = index;
     var file = self.openedFile;
 
-    self.markdownEditor.setContent(file.content);
+    self.markdownEditor.codemirror.getDoc().setValue(file.content);
     self.textarea.trigger('change');
 
     var tab = self.tabBar.find('.file-tab[file-id="' + file.id + '"]').addClass('selected-tab').siblings().removeClass('selected-tab');
