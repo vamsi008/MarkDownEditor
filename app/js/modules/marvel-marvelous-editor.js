@@ -29,7 +29,8 @@ Marvel.MarvelousEditor.prototype = {
       element: self.textarea[0],
       autofocus: true,
       indentWithTabs: true,
-      tabSize: 4
+      tabSize: 4,
+      styleActiveLine: true
     });
     self.markdownEditor.render();
 
