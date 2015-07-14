@@ -54,7 +54,12 @@ ipc.on('editor-save-as', function (event, args) {
         if (err) {
           return false;
         }
-        mainWindow.webContents.send('editor-text',{ fileId: args.fileId, filename: filename.toString(), contents: data.toString() });
+        fs.stat(filename, function (err, stats) {
+          if (err) {
+            return false;
+          }
+          mainWindow.webContents.send('editor-text',{ fileId: args.fileId, filename: filename.toString(), contents: data.toString(), timestamp: stats.mtime.toString() });
+        })
       });
     }
   });
@@ -68,6 +73,16 @@ ipc.on('get-last-session' , function(event, args) {
     }
 
     mainWindow.webContents.send('load-session', JSON.parse(data));
+  });
+});
+
+ipc.on('file-status', function(event, args) {
+  if (args.filepath === "" || args.filepath === undefined) {
+    return;
+  }
+
+  fs.stat(args.filepath, function (err, stats) {
+    mainWindow.webContents.send('file-status', { fileId: args.fileId, filepath: args.filepath, timestamp: stats.mtime.toString() });
   });
 });
 

@@ -1,8 +1,19 @@
 var gulp = require('gulp'),
   zip = require('gulp-zip'),
   info = require('./package.json');
+  eslint = require('gulp-eslint');
+
+var options = {
+  "eslint": {
+    "globals": {
+      "require": true
+    },
+    "useEslintrc": true
+  }
+};
 
 var paths = {
+  "js_src": "app/js/**/*.js",
   "linux_x64": ['build/Marvelous-linux-x64/**'],
   "linux_x32": ['build/Marvelous-linux-ia32/**'],
   "darwin_x64": ['build/Marvelous-darwin-x64/**'],
@@ -10,6 +21,12 @@ var paths = {
   "win_x64": ['build/Marvelous-win-x64/**'],
   "win_x32": ['build/Marvelous-win-ia32/**']
 };
+
+gulp.task('lint:js', function () {
+  return gulp.src(paths["js_src"])
+    .pipe(eslint(options.eslint))
+    .pipe(eslint.formatEach('compact', process.stderr));
+})
 
 gulp.task('release:linux-x64', function () {
   return gulp.src(paths["linux_x64"])

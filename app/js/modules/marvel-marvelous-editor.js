@@ -16,6 +16,15 @@ Marvel.MarvelousEditor = function() {
 Marvel.MarvelousEditor.prototype = {
   init: function () {
     var self = this;
+    self.createMendelEditor();
+
+    self.bindEvents();
+    self.bindIPCEvents();
+    self.loadLastSession();
+  },
+
+  createMendelEditor: function () {
+    var self = this;
     self.markdownEditor = new SimpleMDE({
       element: self.textarea[0],
       autofocus: true,
@@ -23,6 +32,8 @@ Marvel.MarvelousEditor.prototype = {
       tabSize: 4
     });
     self.markdownEditor.render();
+
+    // Setup on change event on the codemirror instance
     self.markdownEditor.codemirror.on('change', function (e) {
       var previewWidth = self.previewArea.width();
       self.previewArea.html(marked(self.markdownEditor.value()));
@@ -46,10 +57,6 @@ Marvel.MarvelousEditor.prototype = {
         }
       }
     });
-
-    self.bindEvents();
-    self.bindIPCEvents();
-    self.loadLastSession();
   },
 
   bindEvents: function () {
@@ -202,6 +209,7 @@ Marvel.MarvelousEditor.prototype = {
     self.bindOpenFile();
     self.bindSaveFile();
     self.bindSaveFileAs();
+    self.bindFileStatus();
     self.bindSaveSuccess();
     self.bindViewModeEvents();
     self.bindCloseWindow();
@@ -235,7 +243,7 @@ Marvel.MarvelousEditor.prototype = {
         var index = self.updateFileWithId(obj.fileId, obj.filename, obj.contents);
         self.openFileAt(index);
       } else {
-        file = new Marvel.File(obj.filename, obj.contents);
+        file = new Marvel.File(obj.filename, obj.contents, obj.timestamp);
         self.openFile(file);
       }
     });
@@ -269,6 +277,16 @@ Marvel.MarvelousEditor.prototype = {
     });
   },
 
+  bindFileStatus: function () {
+    var self = this;
+    ipc.on('file-status', function (obj) {
+      var file = self.getFileWithId(obj.fileId);
+      if (!file) return;
+
+      console.log(obj.timestamp, file.modifiedTimestamp);
+    });
+  },
+
   bindSaveSuccess: function () {
     var self = this;
     ipc.on('save-success', function () {
@@ -283,7 +301,7 @@ Marvel.MarvelousEditor.prototype = {
       if (session.files && session.files.length) {
         for (var i = 0, length = session.files.length; i < length; i++) {
           var file = session.files[i];
-          self.openFile(new Marvel.File(file.filepath, file.content, file.id, file.originalContent));
+          self.openFile(new Marvel.File(file.filepath, file.content, file.timestamp, file.id, file.originalContent));
         }
 
         self.openFileAt(session.openedFileIndex);
@@ -333,6 +351,7 @@ Marvel.MarvelousEditor.prototype = {
     self.openedFileIndex = index;
     var file = self.openedFile;
 
+    self.checkFileChanges(file);
     self.markdownEditor.codemirror.getDoc().setValue(file.content);
     self.textarea.trigger('change');
 
@@ -417,6 +436,16 @@ Marvel.MarvelousEditor.prototype = {
     return -1;
   },
 
+  getFileWithId: function (id) {
+    var self = this;
+    if (!id) return;
+    for (var i = 0, length = self.openedFiles.length; i < length; i++) {
+      if (self.openedFiles[i].id == id) {
+        return self.openedFiles[i];
+      }
+    }
+  },
+
   updateFileWithId: function (id, filename, content) {
     var self = this;
     if (!id) return;
@@ -481,5 +510,14 @@ Marvel.MarvelousEditor.prototype = {
         self.removeFilesExceptId(self.contextMenuElmt.attr('file-id'));
       }
     });
+  },
+
+  checkFileChanges: function (file) {
+    var self = this;
+    if (!file.filepath) {
+      return;
+    }
+
+    ipc.send('file-status', { fileId: file.id, filepath: file.filepath });
   }
 };

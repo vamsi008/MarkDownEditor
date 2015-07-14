@@ -46,7 +46,13 @@ var menuTemplate = [{
             if (err) {
               return false;
             }
-            mainWindow.webContents.send('editor-text',{ filename: filename.toString(), contents: data.toString() });
+            fs.stat(filename.toString(), function(err, stats) {
+              if (err) {
+                return false;
+              }
+
+              mainWindow.webContents.send('editor-text',{ filename: filename.toString(), contents: data.toString(), timestamp: stats.mtime });
+            })
           });
         }
       });
