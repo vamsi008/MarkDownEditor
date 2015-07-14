@@ -36,8 +36,9 @@ Distribution zips can be found under dist folder inside the project folder. Do n
 Build files can be found under build folder inside the project folder. Do not commit these files either to the repo.
 
 ## Screenshots
-![Marvelous Screenshot new](vendor/img/marvelous.png)
-![Marvelous Screenshot old](vendor/img/marvelous-2.png)
+![Marvelous Screenshot alpha](vendor/img/marvelous-v0.1.0-alpha.png)
+![Marvelous Screenshot second](vendor/img/marvelous.png)
+![Marvelous Screenshot first](vendor/img/marvelous-2.png)
 
 
 ## License
