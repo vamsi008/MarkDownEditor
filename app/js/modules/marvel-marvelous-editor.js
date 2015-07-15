@@ -171,7 +171,7 @@ Marvel.MarvelousEditor.prototype = {
       self.openFileWithId(fileId);
     });
 
-    self.tabBar.on('click', '.glyphicon-remove', function (e) {
+    self.tabBar.on('click', '.tab-close', function (e) {
       var clkd = $(this),
         tabContext = clkd.parent(),
         tabNumber = tabContext.index();
@@ -456,7 +456,7 @@ Marvel.MarvelousEditor.prototype = {
         file.update(filename, content);
         var fileNameElement = "<span class='file-name'>"+file.title+"</span>";
         self.tabBar.find('.file-tab[file-id="' + file.id + '"]').html(fileNameElement).attr('title', file.filepath)
-          .append($('<span class="glyphicon glyphicon-remove pull-right" />'));
+          .append($('<span class="fa fa-times fa-fw tab-close" />'));
         self.openFileAt(i);
         return i;
       }
@@ -484,8 +484,8 @@ Marvel.MarvelousEditor.prototype = {
   addTab: function (file) {
     var self = this;
     var fileNameElement = "<span class='file-name'>"+file.title+"</span>";
-    var tab = $('<div class="file-tab" />').attr('file-id', file.id).html(fileNameElement).attr('title', file.filepath);
-    tab.append($('<span class="glyphicon glyphicon-remove pull-right" />'));
+    var tab = $('<div class="file-tab pull-left" />').attr('file-id', file.id).html(fileNameElement).attr('title', file.filepath);
+    tab.append($('<span class="fa fa-times fa-fw tab-close" />'));
 
     self.tabBar.find('.new-file').before(tab);
     tab.addClass('selected-tab').siblings().removeClass('selected-tab');
