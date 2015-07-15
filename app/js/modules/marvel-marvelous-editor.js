@@ -331,6 +331,10 @@ Marvel.MarvelousEditor.prototype = {
         .addClass('col-sm-6').addClass('col-md-6')
         .show();
     });
+
+    ipc.on('toggle-tabs', function(){
+      $("#tab-bar").slideToggle('fast');
+    });
   },
 
   openFile: function (file) {
