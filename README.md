@@ -1,46 +1,55 @@
 # Marvelous
 ![Logo](app/img/marvelous.png)
 
-Marvelous is a cross platform markdown editor and viewer built using Github Atom's shell - Electron.
+Marvelous is a cross-platform Markdown editor and viewer built using [Electron](http://electron.atom.io/).
 
-## How To
+## Installation
 
-### 1. clone this repo
-
+#### Clone
 ``` bash
 git clone https://github.com/hashd/Marvelous.git
 ```
 
-### 2. `cd` into the repo directory and run `npm install`
+#### Setup Dependencies
 
 ``` bash
 cd Marvelous
 npm install
 ```
 
-### 3. run `npm start`
+#### Run
 
 ``` bash
 npm start
 ```
 
-### 4. Build distribution using `npm run build`
+## Build Distribution
+
+Make sure you have [Gulp](http://gulpjs.com) installed globally. 
+```bash
+npm install -g gulp
+```
+Now build it from project root.
 
 ``` bash
-npm install -g gulp
 npm run build
 ```
 
-Distribution zips can be found under dist folder inside the project folder. Do not commit these files to repo.
+**Build files** can be found in `/build` directory.
 
-Build files can be found under build folder inside the project folder. Do not commit these files either to the repo.
+**Distribution archives** can be found in `/dist` directory. 
+
+
+## Issues & Feature Request
+Go through the open [issues](https://github.com/hashd/Marvelous/issues)  before raising one. Check the [milestones](https://github.com/hashd/Marvelous/milestones) to know what's currently brewing! 
 
 ## Screenshots
 ![Marvelous Screenshot alpha](vendor/img/marvelous-v0.1.0-alpha.png)
 ![Marvelous Screenshot second](vendor/img/marvelous.png)
 ![Marvelous Screenshot first](vendor/img/marvelous-2.png)
 
+## Contributing
+Your contribution will be awesome! Go through the list of [open issues](https://github.com/hashd/Marvelous/issues), pick an issue, fix, and send a pull request.
 
 ## License
-
 [MIT](LICENSE.md)
