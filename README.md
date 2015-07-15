@@ -51,5 +51,12 @@ Go through the open [issues](https://github.com/hashd/Marvelous/issues)  before 
 ## Contributing
 Your contribution will be awesome! Go through the list of [open issues](https://github.com/hashd/Marvelous/issues), pick an issue, fix, and send a pull request.
 
+## Contributors
+- [Kiran Danduprolu](https://www.github.com/hashd)
+- Vamsi Kumar Chava
+- Sudhir Chokakula
+- Srikanth P
+- [Praveen Puglia](https://www.github.com/praveenpuglia)
+
 ## License
 [MIT](LICENSE.md)
