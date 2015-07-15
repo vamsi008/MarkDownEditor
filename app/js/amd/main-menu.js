@@ -1,6 +1,7 @@
 module.exports = function menu(mainWindow) {
-  var dialog=require('dialog');
-  var fs=require('fs');
+  var dialog = require('dialog'),
+    fs = require('fs'),
+    process = require('process');
 
 var menuTemplate = [{
   label: 'Marvelous',
@@ -34,26 +35,22 @@ var menuTemplate = [{
     accelerator: 'Control+O',
     click: function () {
       dialog.showOpenDialog({
-        properties: ['openFile'],
+        title: 'Open File or Files',
+        defaultPath: process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'],
+        properties: ['openFile', 'multiSelections', 'createDirectory'],
         filters: [
           { name: 'All', extensions: ['md', 'markdown', 'MD', 'txt', 'TXT' ]},
           { name: 'Markdown', extensions: ['md', 'markdown', 'MD' ]},
           { name: 'Plaintext', extensions: ['txt', 'TXT' ]}
         ]
-      }, function(filename) {
-        if (filename) {
-          fs.readFile(filename.toString(), function(err, data) {
-            if (err) {
-              return false;
-            }
-            fs.stat(filename.toString(), function(err, stats) {
-              if (err) {
-                return false;
-              }
-
-              mainWindow.webContents.send('editor-text',{ filename: filename.toString(), contents: data.toString(), timestamp: stats.mtime });
-            })
-          });
+      }, function(filenames) {
+        if (filenames) {
+          for (var i = 0, length = filenames.length; i < length; i++) {
+            var filename = filenames[i];
+            var data = fs.readFileSync(filename);
+            var stats = fs.statSync(filename);
+            mainWindow.webContents.send('editor-text',{ filename: filename, contents: data.toString(), timestamp: stats.mtime });
+          }
         }
       });
     }
@@ -121,8 +118,7 @@ var menuTemplate = [{
     accelerator: 'Control+Alt+E',
     checked:false,
     type:'radio',
-
-       click: function() {
+    click: function() {
       mainWindow.webContents.send('editor-mode');
     }
   }, {
@@ -130,7 +126,7 @@ var menuTemplate = [{
     accelerator: 'Control+Alt+P',
     checked:false,
     type:'radio',
-       click: function() {
+    click: function() {
       mainWindow.webContents.send('preview-mode');
     }
   }, {
@@ -142,14 +138,32 @@ var menuTemplate = [{
       mainWindow.webContents.send('split-mode');
     }
   },{
-    label: 'Hide/Show Tabs',
+    type: 'separator'
+  },{
+    label: 'Show/Hide Tabs',
     accelerator: 'Control+Alt+H',
-    checked:false,
-    type:'radio',
+    checked: false,
+    type: 'radio',
     click: function() {
       mainWindow.webContents.send('toggle-tabs');
     }
-  }, {
+  },{
+    label: 'Show/Hide Toolbar',
+    accelerator: 'Control+Alt+T',
+    checked: false,
+    type: 'radio',
+    click: function() {
+      mainWindow.webContents.send('toggle-toolbar');
+    }
+  },{
+    label: 'Show/Hide Statusbar',
+    accelerator: 'Control+Alt+K',
+    checked: false,
+    type: 'radio',
+    click: function() {
+      mainWindow.webContents.send('toggle-statusbar');
+    }
+  },{
     type: 'separator'
   }, {
     label: 'Reset Marvelous',

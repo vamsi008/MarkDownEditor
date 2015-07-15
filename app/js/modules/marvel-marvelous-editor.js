@@ -216,6 +216,7 @@ Marvel.MarvelousEditor.prototype = {
     self.bindCloseWindow();
     self.bindLoadSession();
     self.bindCloseTab();
+    self.bindToggleBarsEvents();
   },
 
   bindCloseWindow: function () {
@@ -334,6 +335,17 @@ Marvel.MarvelousEditor.prototype = {
 
     ipc.on('toggle-tabs', function(){
       $("#tab-bar").slideToggle('fast');
+    });
+  },
+
+  bindToggleBarsEvents: function () {
+    var self = this;
+    ipc.on('toggle-toolbar', function () {
+      $('.editor-toolbar').slideToggle('fast');
+    });
+
+    ipc.on('toggle-statusbar', function () {
+      $('.editor-statusbar').slideToggle('fast');
     });
   },
 
