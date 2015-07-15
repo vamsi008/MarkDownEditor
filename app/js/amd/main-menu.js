@@ -141,6 +141,14 @@ var menuTemplate = [{
     click: function() {
       mainWindow.webContents.send('split-mode');
     }
+  },{
+    label: 'Hide/Show Tabs',
+    accelerator: 'Control+Alt+H',
+    checked:false,
+    type:'radio',
+    click: function() {
+      mainWindow.webContents.send('toggle-tabs');
+    }
   }, {
     type: 'separator'
   }, {

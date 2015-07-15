@@ -57,20 +57,31 @@ body.container {
 .file-tab {
   cursor: pointer;
   background: #444;
-  padding: 4px 8px;
+  padding: 0 10px;
   color: #fff;
-  font-size: 0.9em;
-  border-left: 4px solid #444;
-  display: inline-block;
+  font-size: 0.88em;
+  border-left: 4px solid transparent;
+  height:30px;
+  line-height:30px;
 }
 .file-tab > * {
   vertical-align: middle;
 }
-.file-tab > .glyphicon {
-  margin-top: 2px;
-}
 .file-tab:hover {
   background: #666;
+}
+.tab-close:hover {
+  color:#ff7272;
+}
+
+.toggle-tab-bar {
+  color:#ddd;
+  line-height: 30px;
+  margin-right:10px;
+  cursor:pointer;
+}
+.toggle-tab-bar:hover {
+  color:#fff;
 }
 
 .file-tab.selected-tab {
@@ -79,14 +90,15 @@ body.container {
   border-left-color: #04ADEA;
 }
 .file-tab.unsaved {
-  border-left-color: #EF0000;
+  border-left-color: #ff7272;
 }
 .file-name {
   white-space: nowrap;
   text-overflow:ellipsis;
   overflow:hidden;
-  min-width: 120px;
+  max-width:160px;
   display: inline-block;
+  margin-right: 10px;
 }
 .preview-container {
   overflow:auto;
@@ -97,11 +109,10 @@ body.container {
 }
 
 .new-file {
-  vertical-align: bottom;
   color: #ddd;
-  padding: 6px 8px;
-  font-size: 0.9em;
   cursor: pointer;
+  line-height:30px;
+  margin-left:10px;
 }
 
 .new-file:hover {
@@ -151,14 +162,6 @@ body.container {
   padding: 0;
 }
 
-.glyphicon.glyphicon-remove:hover {
-  color: #FF4242;
-}
-
-.glyphicon {
-  transition: color 0.3s ease;
-}
-
 .sa-icon {
   box-sizing: content-box !important;
 }
@@ -178,3 +181,4 @@ body.container {
 .cm-s-paper .cm-header {
   color: #444;
 }
+
